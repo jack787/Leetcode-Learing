@@ -1,23 +1,27 @@
 class Solution {
 public:
-    vector<string>ans;
-char ops[10][10] = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
-    vector<string> letterCombinations(string digits) {
-        if(digits=="")return ans;
-        dfs(digits,0,"");
-        return ans;
-    }
-    void dfs(string &digits,int u,string path)
+    const string mp[10]={"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+    vector<string> result;
+    string path;
+    int n;
+    void dfs(string digits,int startindex)
     {
-        if(u==digits.size())
+        if(path.size()==n)
         {
-            if(path.size())ans.push_back(path);
-            return ;
+            if(path.size()>=1)result.push_back(path);
+            return;
         }
-        int v=digits[u]-'0';
-        for(int i=0;ops[v][i];i++)
+        char t=digits[startindex]-'0';
+        for(int i=0;i<mp[t].size();i++)
         {
-            dfs(digits,u+1,path+ops[v][i]);
+            path.push_back(mp[t][i]);
+            dfs(digits,startindex+1);
+            path.pop_back();
         }
+    }
+    vector<string> letterCombinations(string digits) {
+        n=digits.size();
+        dfs(digits,0);
+        return result;
     }
 };
